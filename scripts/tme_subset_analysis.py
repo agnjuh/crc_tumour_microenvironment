@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -10,7 +11,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
     classification_report,
     confusion_matrix,
-    ConfusionMatrixDisplay,
     balanced_accuracy_score,
 )
 import umap
@@ -47,6 +47,7 @@ FEATURE_COLUMNS = [
     "mean_nucleus_perimeter",
 ]
 
+
 def plot_embedding(df, x, y, out_file, title):
     plt.figure(figsize=(8, 6))
 
@@ -55,7 +56,7 @@ def plot_embedding(df, x, y, out_file, title):
         plt.scatter(
             sub[x],
             sub[y],
-            s=10,
+            s=12,
             alpha=0.75,
             label=label,
         )
@@ -67,6 +68,49 @@ def plot_embedding(df, x, y, out_file, title):
     plt.tight_layout()
     plt.savefig(out_file, dpi=300)
     plt.close()
+
+
+def plot_confusion_matrix(cm, labels, out_file):
+    fig, ax = plt.subplots(figsize=(7, 6))
+
+    im = ax.imshow(
+        cm,
+        cmap="Blues",
+        interpolation="nearest",
+    )
+
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label("Number of patches")
+
+    ax.set_xticks(np.arange(len(labels)))
+    ax.set_yticks(np.arange(len(labels)))
+
+    ax.set_xticklabels(labels)
+    ax.set_yticklabels(labels)
+
+    ax.set_xlabel("Predicted label")
+    ax.set_ylabel("True label")
+    ax.set_title("TME subset confusion matrix")
+
+    threshold = cm.max() / 2
+
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            value = cm[i, j]
+            ax.text(
+                j,
+                i,
+                str(value),
+                ha="center",
+                va="center",
+                color="white" if value > threshold else "black",
+                fontsize=11,
+            )
+
+    plt.tight_layout()
+    plt.savefig(out_file, dpi=300)
+    plt.close()
+
 
 def main():
     df = pd.read_csv(FEATURE_FILE, sep="\t")
@@ -86,6 +130,7 @@ def main():
         metric="euclidean",
         random_state=42,
     )
+
     umap_coords = reducer.fit_transform(X_scaled)
 
     df["PC1"] = pca_coords[:, 0]
@@ -103,7 +148,7 @@ def main():
         "PC1",
         "PC2",
         OUT_PCA,
-        "Tumour–Stroma–Immune subset PCA",
+        "Tumour-Stroma-Immune subset PCA",
     )
 
     plot_embedding(
@@ -111,7 +156,7 @@ def main():
         "UMAP1",
         "UMAP2",
         OUT_UMAP,
-        "Tumour–Stroma–Immune interface UMAP",
+        "Tumour-Stroma-Immune interface UMAP",
     )
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -140,18 +185,7 @@ def main():
         f.write(report)
 
     cm = confusion_matrix(y_test, y_pred, labels=KEEP_LABELS)
-
-    disp = ConfusionMatrixDisplay(
-        confusion_matrix=cm,
-        display_labels=KEEP_LABELS,
-    )
-
-    fig, ax = plt.subplots(figsize=(6, 6))
-    disp.plot(ax=ax, colorbar=False)
-    plt.title("TME subset confusion matrix")
-    plt.tight_layout()
-    plt.savefig(OUT_CM, dpi=300)
-    plt.close()
+    plot_confusion_matrix(cm, KEEP_LABELS, OUT_CM)
 
     print(f"Subset size: {df.shape}")
     print(f"Balanced accuracy: {bal_acc:.4f}")
@@ -164,6 +198,7 @@ def main():
     print(OUT_UMAP)
     print(OUT_REPORT)
     print(OUT_CM)
+
 
 if __name__ == "__main__":
     main()
