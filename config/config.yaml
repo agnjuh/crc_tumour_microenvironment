@@ -1,0 +1,53 @@
+project:
+  name: crc_tumour_microenvironment
+  organism: human
+  disease: colorectal cancer
+
+paths:
+  raw_data: data/raw
+  processed_data: data/processed
+  metadata: data/metadata
+  figures: results/figures
+  tables: results/tables
+  models: results/models
+  embeddings: results/embeddings
+  logs: logs
+
+histology:
+  initial_dataset: NCT-CRC-HE-100K
+  image_format: tif
+  patch_size: 224
+
+scores:
+  ecm_genes:
+    - COL1A1
+    - COL1A2
+    - COL3A1
+    - FN1
+    - POSTN
+    - LOX
+    - LOXL2
+    - SPARC
+    - THBS1
+    - MMP2
+
+  inflammation_genes:
+    - IL6
+    - CXCL8
+    - CCL2
+    - TNF
+    - NFKB1
+    - PTGS2
+    - CXCL10
+    - ICAM1
+
+  immune_genes:
+    - CD3D
+    - CD3E
+    - CD8A
+    - CD8B
+    - GZMB
+    - PRF1
+    - NKG7
+    - MS4A1
+    - LST1

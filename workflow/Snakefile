@@ -1,0 +1,149 @@
+configfile: "config/config.yaml"
+
+DATASET_DIR = "data/raw/crc_val_7k/CRC-VAL-HE-7K"
+
+rule all:
+    input:
+        "results/tables/crc_val_7k_class_counts.tsv",
+        "results/figures/crc_val_7k_class_distribution.png",
+        "results/figures/crc_val_7k_example_patches.png",
+
+        "results/tables/crc_val_7k_morphology_features.tsv",
+        "results/tables/crc_val_7k_nuclear_features.tsv",
+        "results/tables/crc_val_7k_integrated_features.tsv",
+
+        "results/tables/random_forest_integrated_report.txt",
+        "results/figures/random_forest_integrated_confusion_matrix.png",
+
+        "results/tables/crc_val_7k_integrated_pca_umap_coordinates.tsv",
+        "results/figures/crc_val_7k_pca_integrated_features.png",
+        "results/figures/crc_val_7k_umap_integrated_features.png",
+
+        "results/figures/crc_val_7k_umap_patch_montage.png",
+
+        "results/tables/tme_subset_pca_umap_coordinates.tsv",
+        "results/tables/tme_subset_random_forest_report.txt",
+        "results/figures/tme_subset_pca.png",
+        "results/figures/tme_subset_umap.png",
+        "results/figures/tme_subset_confusion_matrix.png",
+
+        "results/tables/tumour_stroma_interface_patches.tsv",
+        "results/figures/tumour_stroma_interface_montage.png",
+
+        "results/tables/tumour_interface_feature_summary.tsv",
+        "results/tables/tumour_core_vs_interface_selected_patches.tsv",
+        "results/figures/tumour_interface_feature_comparison.png",
+
+        "results/tables/normal_tumour_progression_axis.tsv",
+        "results/figures/normal_tumour_progression_umap.png",
+        "results/figures/normal_to_tumour_progression_atlas.png"
+
+rule explore_dataset:
+    input:
+        DATASET_DIR
+    output:
+        table="results/tables/crc_val_7k_class_counts.tsv",
+        distribution="results/figures/crc_val_7k_class_distribution.png",
+        examples="results/figures/crc_val_7k_example_patches.png"
+    shell:
+        "python scripts/explore_crc_val_7k.py"
+
+rule compute_morphology_features:
+    input:
+        DATASET_DIR
+    output:
+        "results/tables/crc_val_7k_morphology_features.tsv"
+    shell:
+        "python scripts/compute_morphology_features.py"
+
+rule compute_nuclear_features:
+    input:
+        DATASET_DIR
+    output:
+        "results/tables/crc_val_7k_nuclear_features.tsv"
+    shell:
+        "python scripts/compute_nuclear_features.py"
+
+rule integrate_features:
+    input:
+        morph="results/tables/crc_val_7k_morphology_features.tsv",
+        nuclear="results/tables/crc_val_7k_nuclear_features.tsv"
+    output:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    shell:
+        "python scripts/integrate_morphology_nuclear_features.py"
+
+rule random_forest_classifier:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        report="results/tables/random_forest_integrated_report.txt",
+        confusion_matrix="results/figures/random_forest_integrated_confusion_matrix.png"
+    shell:
+        "python scripts/random_forest_classifier.py"
+
+rule pca_umap_integrated_features:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        coords="results/tables/crc_val_7k_integrated_pca_umap_coordinates.tsv",
+        pca="results/figures/crc_val_7k_pca_integrated_features.png",
+        umap="results/figures/crc_val_7k_umap_integrated_features.png"
+    shell:
+        "python scripts/pca_umap_integrated_features.py"
+
+rule umap_patch_montage:
+    input:
+        coords="results/tables/crc_val_7k_integrated_pca_umap_coordinates.tsv"
+    output:
+        "results/figures/crc_val_7k_umap_patch_montage.png"
+    shell:
+        "python scripts/umap_patch_montage.py"
+
+rule tme_subset_analysis:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        coords="results/tables/tme_subset_pca_umap_coordinates.tsv",
+        report="results/tables/tme_subset_random_forest_report.txt",
+        pca="results/figures/tme_subset_pca.png",
+        umap="results/figures/tme_subset_umap.png",
+        confusion_matrix="results/figures/tme_subset_confusion_matrix.png"
+    shell:
+        "python scripts/tme_subset_analysis.py"
+
+rule find_tumour_stroma_interface:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        "results/tables/tumour_stroma_interface_patches.tsv"
+    shell:
+        "python scripts/find_tumour_stroma_interface.py"
+
+rule plot_tumour_stroma_interface_montage:
+    input:
+        "results/tables/tumour_stroma_interface_patches.tsv"
+    output:
+        "results/figures/tumour_stroma_interface_montage.png"
+    shell:
+        "python scripts/plot_tumour_stroma_interface_montage.py"
+
+rule analyse_tumour_interface_features:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        summary="results/tables/tumour_interface_feature_summary.tsv",
+        selected="results/tables/tumour_core_vs_interface_selected_patches.tsv",
+        figure="results/figures/tumour_interface_feature_comparison.png"
+    shell:
+        "python scripts/analyse_tumour_interface_features.py"
+
+rule normal_tumour_progression_axis:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        coords="results/tables/normal_tumour_progression_axis.tsv",
+        umap="results/figures/normal_tumour_progression_umap.png",
+        atlas="results/figures/normal_to_tumour_progression_atlas.png"
+    shell:
+        "python scripts/normal_tumour_progression_axis.py"

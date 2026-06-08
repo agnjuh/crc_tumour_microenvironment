@@ -1,0 +1,15 @@
+data/raw/
+data/processed/
+*.zip
+*.tif
+*.svs
+.snakemake/
+logs/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.env
+.venv
+results/embeddings/
+results/models/

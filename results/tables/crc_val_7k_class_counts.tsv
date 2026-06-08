@@ -1,0 +1,10 @@
+label	class_name	n_images
+ADI	adipose	1338
+BACK	background	847
+DEB	debris	339
+LYM	lymphocytes	634
+MUC	mucus	1035
+MUS	smooth muscle	592
+NORM	normal mucosa	741
+STR	cancer-associated stroma	421
+TUM	tumour epithelium	1233

@@ -1,0 +1,12 @@
+Balanced accuracy: 0.9465
+
+              precision    recall  f1-score   support
+
+         LYM       1.00      0.99      1.00       127
+        NORM       0.95      0.93      0.94       148
+         STR       0.91      0.92      0.91        84
+         TUM       0.94      0.95      0.94       247
+
+    accuracy                           0.95       606
+   macro avg       0.95      0.95      0.95       606
+weighted avg       0.95      0.95      0.95       606

@@ -1,0 +1,17 @@
+Balanced accuracy: 0.9494
+
+              precision    recall  f1-score   support
+
+         ADI       0.97      0.99      0.98       268
+        BACK       1.00      1.00      1.00       169
+         DEB       1.00      0.99      0.99        68
+         LYM       0.98      0.98      0.98       127
+         MUC       0.94      0.94      0.94       207
+         MUS       0.95      0.97      0.96       118
+        NORM       0.92      0.86      0.89       148
+         STR       0.96      0.87      0.91        84
+         TUM       0.91      0.95      0.93       247
+
+    accuracy                           0.95      1436
+   macro avg       0.96      0.95      0.95      1436
+weighted avg       0.95      0.95      0.95      1436
