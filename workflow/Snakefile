@@ -39,11 +39,19 @@ rule all:
 
         "results/tables/tumour_immune_proximity_scores.tsv",
         "results/figures/tumour_immune_proximity_umap.png",
-        "results/figures/tumour_immune_proximity_montage.png"
+        "results/figures/tumour_immune_proximity_montage.png",
+
+        "results/tables/tissue_neighbourhood_counts.tsv",
+        "results/tables/tissue_neighbourhood_enrichment.tsv",
+        "results/figures/tissue_neighbourhood_enrichment_heatmap.png",
 
         "results/tables/tumour_progression_immune_correlation.tsv",
         "results/tables/tumour_progression_immune_stats.tsv",
-        "results/figures/tumour_progression_immune_scatter.png"
+        "results/figures/tumour_progression_immune_scatter.png",
+
+        "results/tables/immune_proximity_feature_importance.tsv",
+        "results/figures/immune_proximity_feature_importance.png"
+
 
 rule explore_dataset:
     input:
@@ -55,6 +63,7 @@ rule explore_dataset:
     shell:
         "python scripts/explore_crc_val_7k.py"
 
+
 rule compute_morphology_features:
     input:
         DATASET_DIR
@@ -63,6 +72,7 @@ rule compute_morphology_features:
     shell:
         "python scripts/compute_morphology_features.py"
 
+
 rule compute_nuclear_features:
     input:
         DATASET_DIR
@@ -70,6 +80,7 @@ rule compute_nuclear_features:
         "results/tables/crc_val_7k_nuclear_features.tsv"
     shell:
         "python scripts/compute_nuclear_features.py"
+
 
 rule integrate_features:
     input:
@@ -80,6 +91,7 @@ rule integrate_features:
     shell:
         "python scripts/integrate_morphology_nuclear_features.py"
 
+
 rule random_forest_classifier:
     input:
         "results/tables/crc_val_7k_integrated_features.tsv"
@@ -88,6 +100,7 @@ rule random_forest_classifier:
         confusion_matrix="results/figures/random_forest_integrated_confusion_matrix.png"
     shell:
         "python scripts/random_forest_classifier.py"
+
 
 rule pca_umap_integrated_features:
     input:
@@ -99,6 +112,7 @@ rule pca_umap_integrated_features:
     shell:
         "python scripts/pca_umap_integrated_features.py"
 
+
 rule umap_patch_montage:
     input:
         coords="results/tables/crc_val_7k_integrated_pca_umap_coordinates.tsv"
@@ -106,6 +120,7 @@ rule umap_patch_montage:
         "results/figures/crc_val_7k_umap_patch_montage.png"
     shell:
         "python scripts/umap_patch_montage.py"
+
 
 rule tme_subset_analysis:
     input:
@@ -119,6 +134,7 @@ rule tme_subset_analysis:
     shell:
         "python scripts/tme_subset_analysis.py"
 
+
 rule find_tumour_stroma_interface:
     input:
         "results/tables/crc_val_7k_integrated_features.tsv"
@@ -127,6 +143,7 @@ rule find_tumour_stroma_interface:
     shell:
         "python scripts/find_tumour_stroma_interface.py"
 
+
 rule plot_tumour_stroma_interface_montage:
     input:
         "results/tables/tumour_stroma_interface_patches.tsv"
@@ -134,6 +151,7 @@ rule plot_tumour_stroma_interface_montage:
         "results/figures/tumour_stroma_interface_montage.png"
     shell:
         "python scripts/plot_tumour_stroma_interface_montage.py"
+
 
 rule analyse_tumour_interface_features:
     input:
@@ -145,6 +163,7 @@ rule analyse_tumour_interface_features:
     shell:
         "python scripts/analyse_tumour_interface_features.py"
 
+
 rule normal_tumour_progression_axis:
     input:
         "results/tables/crc_val_7k_integrated_features.tsv"
@@ -154,6 +173,7 @@ rule normal_tumour_progression_axis:
         atlas="results/figures/normal_to_tumour_progression_atlas.png"
     shell:
         "python scripts/normal_tumour_progression_axis.py"
+
 
 rule immune_proximity_analysis:
     input:
@@ -165,6 +185,18 @@ rule immune_proximity_analysis:
     shell:
         "python scripts/immune_proximity_analysis.py"
 
+
+rule tissue_neighbourhood_analysis:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        counts="results/tables/tissue_neighbourhood_counts.tsv",
+        enrichment="results/tables/tissue_neighbourhood_enrichment.tsv",
+        heatmap="results/figures/tissue_neighbourhood_enrichment_heatmap.png"
+    shell:
+        "python scripts/tissue_neighbourhood_analysis.py"
+
+
 rule tumour_progression_immune_correlation:
     input:
         progression="results/tables/normal_tumour_progression_axis.tsv",
@@ -175,3 +207,14 @@ rule tumour_progression_immune_correlation:
         figure="results/figures/tumour_progression_immune_scatter.png"
     shell:
         "python scripts/tumour_progression_immune_correlation.py"
+
+
+rule immune_proximity_feature_importance:
+    input:
+        features="results/tables/crc_val_7k_integrated_features.tsv",
+        immune="results/tables/tumour_immune_proximity_scores.tsv"
+    output:
+        table="results/tables/immune_proximity_feature_importance.tsv",
+        figure="results/figures/immune_proximity_feature_importance.png"
+    shell:
+        "python scripts/immune_proximity_feature_importance.py"
