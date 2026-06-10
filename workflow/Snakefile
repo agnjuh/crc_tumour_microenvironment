@@ -18,7 +18,6 @@ rule all:
         "results/tables/crc_val_7k_integrated_pca_umap_coordinates.tsv",
         "results/figures/crc_val_7k_pca_integrated_features.png",
         "results/figures/crc_val_7k_umap_integrated_features.png",
-
         "results/figures/crc_val_7k_umap_patch_montage.png",
 
         "results/tables/tme_subset_pca_umap_coordinates.tsv",
@@ -36,7 +35,11 @@ rule all:
 
         "results/tables/normal_tumour_progression_axis.tsv",
         "results/figures/normal_tumour_progression_umap.png",
-        "results/figures/normal_to_tumour_progression_atlas.png"
+        "results/figures/normal_to_tumour_progression_atlas.png",
+
+        "results/tables/tumour_immune_proximity_scores.tsv",
+        "results/figures/tumour_immune_proximity_umap.png",
+        "results/figures/tumour_immune_proximity_montage.png"
 
 rule explore_dataset:
     input:
@@ -147,3 +150,13 @@ rule normal_tumour_progression_axis:
         atlas="results/figures/normal_to_tumour_progression_atlas.png"
     shell:
         "python scripts/normal_tumour_progression_axis.py"
+
+rule immune_proximity_analysis:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        scores="results/tables/tumour_immune_proximity_scores.tsv",
+        umap="results/figures/tumour_immune_proximity_umap.png",
+        montage="results/figures/tumour_immune_proximity_montage.png"
+    shell:
+        "python scripts/immune_proximity_analysis.py"
