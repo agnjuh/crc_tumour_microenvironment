@@ -193,6 +193,51 @@ A strong negative relationship was observed between normal-to-tumour progression
 
 This suggests that tumour-core-like morphology and immune-associated tumour morphology occupy opposing regions of the integrated morphology space. In this dataset, tumour patches with higher progression scores tended to show lower immune proximity, consistent with an immune-distant tumour-core morphology axis.
 
+## Stromal morphology states
+
+The tumour-associated stroma (STR) class was analysed separately to investigate whether distinct stromal morphology states could be resolved from morphology and nuclear architecture alone.
+
+A subset of stromal patches was embedded in morphology space and partitioned into unsupervised stromal-state clusters. Representative image patches revealed three recurring stromal phenotypes:
+
+- Cellular stroma
+- Large-nucleus stroma
+- Matrix-like stroma
+
+![Stromal morphology states](results/figures/stromal_state_umap.png)
+
+### Representative stromal states
+
+![Representative stromal states](results/figures/stromal_state_montage.png)
+
+Summary statistics:
+
+| Stromal state | N | Mean nuclei count | Mean nucleus area | Mean intensity |
+|---|---:|---:|---:|---:|
+| Cellular stroma | 123 | 87.43 | 97.79 | 169.63 |
+| Large-nucleus stroma | 178 | 75.49 | 180.10 | 147.24 |
+| Matrix-like stroma | 120 | 54.41 | 95.26 | 183.37 |
+
+Cellular stroma was characterised by increased nuclei density and greater local cellularity. Large-nucleus stroma showed enlarged nuclear morphology and increased nuclear area fraction. Matrix-like stroma displayed lower cellular density and brighter extracellular-matrix-rich morphology.
+
+### Features separating stromal states
+
+![Stromal state feature importance](results/figures/stromal_state_feature_importance.png)
+
+The most informative features included colour intensity, nuclei count, nuclei density, nuclear area fraction and nuclear size measurements.
+
+Top features:
+
+| Feature | Importance |
+|---|---:|
+| mean_g | 0.121 |
+| mean_intensity | 0.118 |
+| mean_r | 0.104 |
+| nuclei_count | 0.095 |
+| nuclei_density | 0.085 |
+| nuclear_area_fraction | 0.083 |
+
+These results indicate that tumour-associated stroma occupies multiple morphology states that differ in cellularity, nuclear architecture and extracellular-matrix composition, suggesting that stromal heterogeneity can be detected directly from routine H&E morphology.
+
 ## Features associated with immune proximity
 
 To identify morphological characteristics associated with immune-associated tumour states, Random Forest regression was used to predict immune-proximity scores from integrated morphology and nuclear features.
@@ -250,19 +295,22 @@ Low progression scores correspond to organised glandular architecture, preserved
 
 3. Tumour, stromal and normal epithelial compartments occupied partially overlapping regions of morphology space, while adipose tissue, lymphocyte-rich regions and debris formed highly distinct territories.
 
-4. Tumour–stroma interface regions were identifiable as morphologically ambiguous patches located between tumour and stromal neighbourhoods in the integrated feature space.
+4. Tumour-associated stroma was not morphologically homogeneous. Unsupervised analysis identified cellular, large-nucleus and matrix-like stromal states that differed in cellularity, nuclear morphology and extracellular-matrix appearance.
 
-5. Interface-associated tumour patches exhibited increased nuclei density and reduced mean nuclear area compared with tumour-core regions.
+5. Tumour–stroma interface regions were identifiable as morphologically ambiguous patches located between tumour and stromal neighbourhoods in the integrated feature space.
 
-6. Colorectal tissue morphology formed a continuous progression axis extending from normal mucosa (mean score 0.401) to tumour-associated morphology (mean score 0.564).
+6. Interface-associated tumour patches exhibited increased nuclei density and reduced mean nuclear area compared with tumour-core regions.
 
-7. Tumour morphology formed a continuous immune-proximity gradient spanning immune-associated and immune-distant tumour states.
+7. Colorectal tissue morphology formed a continuous progression axis extending from normal mucosa (mean score 0.401) to tumour-associated morphology (mean score 0.564).
 
-8. Tumour progression and immune proximity were strongly negatively correlated (Pearson r = -0.884; Spearman rho = -0.900), indicating that tumour-core-like and immune-associated morphologies occupy opposing regions of morphology space.
+8. Tumour morphology formed a continuous immune-proximity gradient spanning immune-associated and immune-distant tumour states.
 
-9. Tissue-neighbourhood analysis identified biologically meaningful relationships between tissue classes, including strong enrichment between stromal and smooth-muscle regions.
+9. Tumour progression and immune proximity were strongly negatively correlated (Pearson r = -0.884; Spearman rho = -0.900), indicating that tumour-core-like and immune-associated morphologies occupy opposing regions of morphology space.
 
-10. Image-intensity and nuclear-shape features were stronger predictors of immune proximity than nuclei counts alone, suggesting that immune-associated tumour states reflect broader tissue reorganisation rather than simple changes in cellular density.
+10. Tissue-neighbourhood analysis identified biologically meaningful relationships between tissue classes, including strong enrichment between stromal and smooth-muscle regions.
+
+11. Image-intensity and nuclear-shape features were stronger predictors of immune proximity than nuclei counts alone, suggesting that immune-associated tumour states reflect broader tissue reorganisation rather than simple changes in cellular density.
+
 ## Reproducibility
 
 The full analysis is implemented as a Snakemake workflow.
