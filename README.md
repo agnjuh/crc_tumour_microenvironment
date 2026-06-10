@@ -207,4 +207,4 @@ crc_tumour_microenvironment/
 
 ## Future directions
 
-Potential extensions include graph-based tissue neighbourhood modelling, tumour invasion trajectory analysis, stromal activation scoring, immune exclusion quantification, spatial transcriptomics integration and foundation-model embeddings for digital pathology.
+Future work may extend the framework towards spatial tumour microenvironment modelling, including tumour–stroma interaction analysis, immune exclusion quantification, stromal activation scoring, tissue neighbourhood graphs, tumour invasion trajectories, and integration with pathology foundation models and spatial transcriptomics datasets.
