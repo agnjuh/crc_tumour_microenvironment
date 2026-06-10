@@ -1,4 +1,4 @@
-# CRC-TME: Morphological State Mapping of the Colorectal Tumour Microenvironment
+# CRC-TME: Morphological state mapping of the colorectal tumour microenvironment
 
 ## Overview
 
@@ -156,6 +156,22 @@ Representative tumour patches ordered by immune-proximity score are shown below.
 ![Tumour immune proximity montage](results/figures/tumour_immune_proximity_montage.png)
 
 Immune-proximal tumour regions frequently displayed increased cellular density, greater nuclear heterogeneity and reduced glandular organisation compared with tumour-core regions, consistent with local immune infiltration or tumour–immune interaction zones.
+
+## Tumour progression and immune proximity
+
+Tumour progression and immune proximity were compared to test whether tumour-like morphology and immune-associated morphology represent related or divergent axes within the tumour microenvironment.
+
+![Tumour progression versus immune proximity](results/figures/tumour_progression_immune_scatter.png)
+
+A strong negative relationship was observed between normal-to-tumour progression score and immune-proximity score across tumour patches.
+
+| Metric | Value |
+|---|---:|
+| Pearson r | -0.884 |
+| Spearman rho | -0.900 |
+| Tumour patches | 1,233 |
+
+This suggests that tumour-core-like morphology and immune-associated tumour morphology occupy opposing regions of the integrated morphology space. In this dataset, tumour patches with higher progression scores tended to show lower immune proximity, consistent with an immune-distant tumour-core morphology axis.
 
 
 ## Normal-to-tumour morphology progression axis

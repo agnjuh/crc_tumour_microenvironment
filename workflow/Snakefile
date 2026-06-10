@@ -41,6 +41,10 @@ rule all:
         "results/figures/tumour_immune_proximity_umap.png",
         "results/figures/tumour_immune_proximity_montage.png"
 
+        "results/tables/tumour_progression_immune_correlation.tsv",
+        "results/tables/tumour_progression_immune_stats.tsv",
+        "results/figures/tumour_progression_immune_scatter.png"
+
 rule explore_dataset:
     input:
         DATASET_DIR
@@ -160,3 +164,14 @@ rule immune_proximity_analysis:
         montage="results/figures/tumour_immune_proximity_montage.png"
     shell:
         "python scripts/immune_proximity_analysis.py"
+
+rule tumour_progression_immune_correlation:
+    input:
+        progression="results/tables/normal_tumour_progression_axis.tsv",
+        immune="results/tables/tumour_immune_proximity_scores.tsv"
+    output:
+        table="results/tables/tumour_progression_immune_correlation.tsv",
+        stats="results/tables/tumour_progression_immune_stats.tsv",
+        figure="results/figures/tumour_progression_immune_scatter.png"
+    shell:
+        "python scripts/tumour_progression_immune_correlation.py"
