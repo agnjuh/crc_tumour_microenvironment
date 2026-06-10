@@ -275,11 +275,17 @@ Dry run:
 
 `snakemake -s workflow/Snakefile --cores 1 -n`
 
-## Repository Structure
 
+## Repository structure
+
+```text
 crc_tumour_microenvironment/
 ├── config/
+│   └── config.yaml
 ├── data/
+│   ├── metadata/
+│   ├── processed/
+│   └── raw/
 ├── docs/
 ├── envs/
 ├── logs/
@@ -291,6 +297,7 @@ crc_tumour_microenvironment/
 │   └── Snakefile
 ├── README.md
 └── LICENSE
+```
 
 ## Future directions
 
