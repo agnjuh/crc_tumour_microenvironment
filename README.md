@@ -236,7 +236,7 @@ Top features:
 | nuclei_density | 0.085 |
 | nuclear_area_fraction | 0.083 |
 
-These results indicate that tumour-associated stroma occupies multiple morphology states that differ in cellularity, nuclear architecture and extracellular-matrix composition, suggesting that stromal heterogeneity can be detected directly from routine H&E morphology.
+These results indicate that tumour-associated stroma occupies multiple morphology states that differ in cellularity, nuclear architecture and extracellular-matrix composition, suggesting that stromal morphology states can be identified from routine H&E morphology.
 
 ## Features associated with immune proximity
 
