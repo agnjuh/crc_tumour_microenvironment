@@ -133,6 +133,31 @@ Interface-associated tumour patches showed higher nuclei counts and smaller mean
 | Core tumour | 44.36 | 437.22 | 0.369 | 4.993 | 149.67 |
 | Interface tumour | 75.72 | 220.33 | 0.300 | 4.887 | 151.51 |
 
+
+
+## Tumour immune-proximity analysis
+
+To investigate immune-associated tumour states, tumour patches were projected into the integrated morphology space and compared with lymphocyte-rich regions.
+
+An immune-proximity score was calculated from the relative distances of tumour patches to tumour and lymphocyte centroids.
+
+| Score | Interpretation |
+|---|---|
+| Low score | Tumour-core morphology |
+| Intermediate score | Mixed tumour morphology |
+| High score | Immune-associated tumour morphology |
+
+![Tumour immune proximity UMAP](results/figures/tumour_immune_proximity_umap.png)
+
+The resulting landscape revealed a continuous gradient across tumour morphology space. Rather than forming discrete classes, tumour patches occupied a spectrum ranging from tumour-core morphology to regions displaying increased similarity to lymphocyte-rich tissue.
+
+Representative tumour patches ordered by immune-proximity score are shown below.
+
+![Tumour immune proximity montage](results/figures/tumour_immune_proximity_montage.png)
+
+Immune-proximal tumour regions frequently displayed increased cellular density, greater nuclear heterogeneity and reduced glandular organisation compared with tumour-core regions, consistent with local immune infiltration or tumour–immune interaction zones.
+
+
 ## Normal-to-tumour morphology progression axis
 
 A continuous normal-to-tumour morphology progression score was derived from the relative position of each patch to normal and tumour centroids in the integrated feature space.
@@ -175,6 +200,8 @@ Low progression scores correspond to organised glandular architecture, preserved
 5. Interface-associated tumour patches exhibited increased nuclei density and reduced mean nuclear area compared with tumour-core regions.
 
 6. Progression-score distributions indicated continuous morphological variation between normal mucosa and tumour epithelium, with intermediate states occupying the space between these endpoints.
+
+7. Tumour morphology formed a continuous immune-proximity gradient, suggesting that immune-associated tumour states can be identified from morphology and nuclear architecture.
 
 ## Reproducibility
 
