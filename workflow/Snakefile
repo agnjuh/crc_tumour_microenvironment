@@ -50,7 +50,15 @@ rule all:
         "results/figures/tumour_progression_immune_scatter.png",
 
         "results/tables/immune_proximity_feature_importance.tsv",
-        "results/figures/immune_proximity_feature_importance.png"
+        "results/figures/immune_proximity_feature_importance.png",
+
+        "results/tables/stromal_state_analysis.tsv",
+        "results/tables/stromal_state_summary.tsv",
+        "results/tables/stromal_state_feature_importance.tsv",
+
+        "results/figures/stromal_state_umap.png",
+        "results/figures/stromal_state_montage.png",
+        "results/figures/stromal_state_feature_importance.png"
 
 
 rule explore_dataset:
@@ -218,3 +226,16 @@ rule immune_proximity_feature_importance:
         figure="results/figures/immune_proximity_feature_importance.png"
     shell:
         "python scripts/immune_proximity_feature_importance.py"
+
+rule stromal_state_analysis:
+    input:
+        "results/tables/crc_val_7k_integrated_features.tsv"
+    output:
+        analysis="results/tables/stromal_state_analysis.tsv",
+        summary="results/tables/stromal_state_summary.tsv",
+        importance="results/tables/stromal_state_feature_importance.tsv",
+        umap="results/figures/stromal_state_umap.png",
+        montage="results/figures/stromal_state_montage.png",
+        importance_plot="results/figures/stromal_state_feature_importance.png"
+    shell:
+        "python scripts/stromal_state_analysis.py"
