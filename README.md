@@ -350,3 +350,14 @@ crc_tumour_microenvironment/
 ## Future directions
 
 Future work may extend the framework towards spatial tumour microenvironment modelling, including tumour–stroma interaction analysis, immune exclusion quantification, stromal activation scoring, tissue neighbourhood graphs, tumour invasion trajectories, and integration with pathology foundation models and spatial transcriptomics datasets.
+
+
+## Citation
+
+### Dataset
+
+Kather, J. N., Halama, N., & Marx, A. (2018). 100,000 histological images of human colorectal cancer and healthy tissue (v0.1) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.1214456
+
+### Repository
+
+Juhász, Á. J. (2026).CRC-TME: Computational pathology analysis of tumour microenvironment states in colorectal cancer [Source code]. GitHub.
