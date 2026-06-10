@@ -1,12 +1,14 @@
-# CRC-TME: Morphological state mapping of the colorectal tumour microenvironment
+# CRC-TME: Computational pathology analysis of tumour microenvironment states in colorectal cancer
 
 ## Overview
 
-This project investigates whether quantitative morphology and nuclear architecture can resolve tissue states within the colorectal tumour microenvironment.
+This project investigates whether quantitative morphology and nuclear architecture can resolve biologically meaningful tissue states within the colorectal tumour microenvironment.
 
-Using H&E-stained image patches from the CRC-VAL-HE-7K dataset, an integrated feature space was constructed from classical morphology descriptors and nucleus-derived measurements. This representation was used to classify colorectal tissue compartments, construct morphology atlases, identify tumour-stroma interface regions, and derive a continuous normal-to-tumour morphology progression axis.
+Using H&E-stained image patches from the CRC-VAL-HE-7K dataset, an integrated feature space was constructed from classical morphology descriptors and nucleus-derived measurements. This representation was used to classify colorectal tissue compartments, construct morphology atlases, identify tumour–stroma interface regions, derive continuous morphology progression trajectories, quantify immune-associated tumour states, and investigate relationships between tumour progression and immune proximity.
 
-The analysis demonstrates that colorectal tissue morphology occupies a structured state space in which normal and tumour-associated phenotypes form partially overlapping but distinguishable regions connected by intermediate morphological states.
+The analysis demonstrates that colorectal tissue morphology occupies a structured state space in which tumour progression, stromal interaction and immune association emerge as continuous and quantifiable dimensions of tissue organisation.
+
+Rather than treating tissue classes as isolated categories, the framework explores how tumour, stromal, immune-rich and normal epithelial states are positioned relative to one another within a shared morphology space. This allows transitional states and biologically meaningful neighbourhood relationships to be identified directly from histological appearance.
 
 ## Dataset
 
@@ -16,7 +18,7 @@ The analysis uses the publicly available CRC-VAL-HE-7K dataset.
 |---|---|
 | Dataset | CRC-VAL-HE-7K |
 | Total image patches | 7,180 |
-| Patch size | 224 x 224 pixels |
+| Patch size | 224 × 224 pixels |
 | Stain | H&E |
 | Annotation | Expert-labelled histological tissue classes |
 
@@ -133,13 +135,31 @@ Interface-associated tumour patches showed higher nuclei counts and smaller mean
 | Core tumour | 44.36 | 437.22 | 0.369 | 4.993 | 149.67 |
 | Interface tumour | 75.72 | 220.33 | 0.300 | 4.887 | 151.51 |
 
+## Tissue neighbourhood analysis
 
+To investigate how tissue classes are organised within morphology space, a k-nearest-neighbour graph was constructed using the integrated morphology representation.
+
+Neighbourhood enrichment analysis was performed by comparing observed neighbour frequencies with frequencies expected from the overall class distribution.
+
+![Tissue neighbourhood enrichment](results/figures/tissue_neighbourhood_enrichment_heatmap.png)
+
+Most tissue classes displayed strong self-association, indicating that morphology space is highly structured. Among cross-class relationships, tumour-associated stroma and smooth muscle exhibited the strongest positive neighbourhood enrichment.
+
+| Relationship | Log2 enrichment |
+|---|---:|
+| STR → MUS | 1.31 |
+| MUS → STR | 0.99 |
+
+These relationships are biologically plausible given the shared spindle-cell morphology and extracellular-matrix-rich architecture frequently observed in stromal and smooth-muscle regions.
+
+The analysis suggests that the integrated feature space captures biologically meaningful relationships between tissue compartments beyond simple class separation.
 
 ## Tumour immune-proximity analysis
 
 To investigate immune-associated tumour states, tumour patches were projected into the integrated morphology space and compared with lymphocyte-rich regions.
 
-An immune-proximity score was calculated from the relative distances of tumour patches to tumour and lymphocyte centroids.
+Immune-proximal tumour regions occupied a distinct region of morphology space characterised by differences in tissue architecture, staining intensity patterns and nuclear morphology. The observed variation extended beyond simple changes in nuclei counts and suggests broader differences in tissue organisation associated with immune-rich tumour environments.
+
 
 | Score | Interpretation |
 |---|---|
@@ -173,6 +193,25 @@ A strong negative relationship was observed between normal-to-tumour progression
 
 This suggests that tumour-core-like morphology and immune-associated tumour morphology occupy opposing regions of the integrated morphology space. In this dataset, tumour patches with higher progression scores tended to show lower immune proximity, consistent with an immune-distant tumour-core morphology axis.
 
+## Features associated with immune proximity
+
+To identify morphological characteristics associated with immune-associated tumour states, Random Forest regression was used to predict immune-proximity scores from integrated morphology and nuclear features.
+
+![Immune proximity feature importance](results/figures/immune_proximity_feature_importance.png)
+
+Top predictors included image-intensity measurements and nuclear morphology features.
+
+| Feature | Importance |
+|---|---:|
+| Mean intensity | 0.237 |
+| Mean nucleus perimeter | 0.128 |
+| Mean green channel intensity | 0.123 |
+| Red-channel variation | 0.103 |
+| Green-channel variation | 0.056 |
+
+Classical cellularity measurements such as nuclei count and nuclei density also contributed to prediction, but were not the dominant variables.
+
+These findings suggest that immune-associated tumour states differ not only in cellular composition but also in broader tissue architecture and staining characteristics captured by the integrated morphology representation.
 
 ## Normal-to-tumour morphology progression axis
 
@@ -205,7 +244,7 @@ Low progression scores correspond to organised glandular architecture, preserved
 
 ## Key findings
 
-1. Integrated morphology and nuclear features achieved a balanced classification accuracy of approximately 95% across nine colorectal tissue compartments.
+1. Integrated morphology and nuclear features achieved approximately 95% balanced classification accuracy across nine colorectal tissue compartments.
 
 2. Nuclear architecture contributed substantially to tissue discrimination beyond image-level morphology alone.
 
@@ -215,10 +254,15 @@ Low progression scores correspond to organised glandular architecture, preserved
 
 5. Interface-associated tumour patches exhibited increased nuclei density and reduced mean nuclear area compared with tumour-core regions.
 
-6. Progression-score distributions indicated continuous morphological variation between normal mucosa and tumour epithelium, with intermediate states occupying the space between these endpoints.
+6. Colorectal tissue morphology formed a continuous progression axis extending from normal mucosa (mean score 0.401) to tumour-associated morphology (mean score 0.564).
 
-7. Tumour morphology formed a continuous immune-proximity gradient, suggesting that immune-associated tumour states can be identified from morphology and nuclear architecture.
+7. Tumour morphology formed a continuous immune-proximity gradient spanning immune-associated and immune-distant tumour states.
 
+8. Tumour progression and immune proximity were strongly negatively correlated (Pearson r = -0.884; Spearman rho = -0.900), indicating that tumour-core-like and immune-associated morphologies occupy opposing regions of morphology space.
+
+9. Tissue-neighbourhood analysis identified biologically meaningful relationships between tissue classes, including strong enrichment between stromal and smooth-muscle regions.
+
+10. Image-intensity and nuclear-shape features were stronger predictors of immune proximity than nuclei counts alone, suggesting that immune-associated tumour states reflect broader tissue reorganisation rather than simple changes in cellular density.
 ## Reproducibility
 
 The full analysis is implemented as a Snakemake workflow.
